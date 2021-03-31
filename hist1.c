@@ -2,8 +2,17 @@
 #include "TMath.h"
 
 // dlaczego co jakiś czas jest n_cząstek = 2 i nie ma tych cząstek w pliku tekstowym?
-
-void hist1(int pId){
+bool sign(int x, int y){ //sprawdza znak ladunku
+	if (x>0 && y>0)
+		return true;
+	else if (x<0 && y<0)
+		return true;
+	else if (x==y&& y==0)
+		return true;
+	else
+		return false;
+}
+void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int, byle mial dobry znak)
 
 	double mean;
 	double variance;
@@ -21,7 +30,7 @@ void hist1(int pId){
 
 
   long npart1, npart_1, npart101, npart_102;
-  int npart, ipass, counter;
+  int npart, ipass, counter, charge; //l czastek, pass, counter, ladunek
   double pass;
   int id;  //w pliku przechowywane sa pedy poprzeczne
   //int val = 0;
@@ -33,8 +42,9 @@ void hist1(int pId){
 	    my_input>>ipass;
 	    counter = 0;
 	    for(int i=1; i<=npart; i=i+1){
-	      my_input>>pass>>pass>>pass>>pass>>pass>>pass>>pass>>id;        //wczytujemy z pliku kolejne wartosci
-	      if (id == pId){
+	      my_input>>pass>>pass>>charge>>pass>>pass>>pass>>pass>>id;        //wczytujemy z pliku kolejne wartosci
+
+	      if (id == pId && sign(charge, pCharge)){
 	        counter++;
 	      }
 	      pt_pbpb->Fill(counter);
