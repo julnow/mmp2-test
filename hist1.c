@@ -43,13 +43,13 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
 	    counter = 0;
 	    for(int i=1; i<=npart; i=i+1){
 	      my_input>>pass>>pass>>charge>>pass>>pass>>pass>>pass>>id;        //wczytujemy z pliku kolejne wartosci
-
 	      if (id == pId && sign(charge, pCharge)){
+					cout <<charge<<endl;
 	        counter++;
+					pt_pbpb->Fill(counter);
 	      }
-	      pt_pbpb->Fill(counter);
 	    }
-	}
+		}
   }
   my_input.close();
 
