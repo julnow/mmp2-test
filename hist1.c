@@ -69,7 +69,12 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   pt_pbpb->Draw("BAR3");
 
 	//zapis histogramu do pliku
-	TFile *flog = new TFile("histogramy.root","recreate");
+	char rootfile[100];
+	const char *root = ".root";
+	strcpy(rootfile,histname);
+	strcat(rootfile, root);
+	TFile *flog = new TFile(rootfile, "recreate");// za pierwzeym razem trzeba,"recreate");
+
 	flog->cd();
 	pt_pbpb->Write();
 	flog->Close();
