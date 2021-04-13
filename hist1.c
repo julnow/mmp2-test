@@ -72,8 +72,16 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   variance = pt_pbpb->GetStdDev() * pt_pbpb->GetStdDev();
   scaledvar = variance / mean;
 
-  cout<<mean<<endl;
-  cout<<variance<<endl;
-  cout<<scaledvar<<endl;
+	//obliczone dane
+	const char *outputname1 = "Dla czastki o ID = ";
+  char outputname[100];
+	strcpy(outputname,outputname1);
+	strcat(outputname,histname2);
+	strcat(outputname, histname3);
+	strcat(outputname, histname4);
+	cout<<outputname<<endl;
+  cout<<"srednie odchylenie: "<<mean<<endl;
+  cout<<"wariancja: "<<variance<<endl;
+  cout<<"wariancja skalowana: "<<scaledvar<<endl;
 
 }
