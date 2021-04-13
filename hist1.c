@@ -21,9 +21,13 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   const char *filename = "test1.txt";
   const char *histname1 = "Histogram czastki o ID = ";
   const char *histname2 = to_string(pId).c_str();
+	const char *histname3 = ", q = ";
+	const char *histname4 = to_string(pCharge).c_str();
   char histname[100];
   strcpy(histname,histname1);
 	strcat(histname,histname2);
+	strcat(histname, histname3);
+	strcat(histname, histname4);
   my_input.open(filename);   //otwieramy plik z danymi
 
   TH1I *pt_pbpb = new TH1I("Rozklad rodzaju czastek", histname, 100, 0.5, 15); //"czastka nr"+std::to_string(pId)
@@ -44,7 +48,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
 	    for(int i=1; i<=npart; i=i+1){
 	      my_input>>pass>>pass>>charge>>pass>>pass>>pass>>pass>>id;        //wczytujemy z pliku kolejne wartosci
 	      if (id == pId && sign(charge, pCharge)){
-					cout <<charge<<endl;
+				//	cout <<charge<<endl;
 	        counter++;
 
 	      }
