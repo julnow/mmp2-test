@@ -68,6 +68,12 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   pt_pbpb->SetBarOffset(-2.0);
   pt_pbpb->Draw("BAR3");
 
+	//zapis histogramu do pliku
+	TFile *flog = new TFile("histogramy.root","recreate");
+	flog->cd();
+	pt_pbpb->Write();
+	flog->Close();
+
   mean = pt_pbpb->GetMean();
   variance = pt_pbpb->GetStdDev() * pt_pbpb->GetStdDev();
   scaledvar = variance / mean;
