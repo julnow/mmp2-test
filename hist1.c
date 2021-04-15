@@ -68,16 +68,27 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   pt_pbpb->SetBarOffset(-2.0);
   pt_pbpb->Draw("BAR3");
 
+	/*
 	//zapis histogramu do pliku
 	char rootfile[100];
 	const char *root = ".root";
 	strcpy(rootfile,histname);
 	strcat(rootfile, root);
 	TFile *flog = new TFile(rootfile, "recreate");// za pierwzeym razem trzeba,"recreate");
-
 	flog->cd();
 	pt_pbpb->Write();
 	flog->Close();
+	*/
+	//zapis histogramu do png
+	char histfile[100] = "";
+	const char *png = ".png";
+	const char *histfile1 = "_";
+	strcat(histfile, histname2);
+	strcat(histfile, histfile1);
+	strcat(histfile, histname4);
+	strcat(histfile, png);
+	cout <<histfile<<endl;
+	canvas->Print(histfile);
 
   mean = pt_pbpb->GetMean();
   variance = pt_pbpb->GetStdDev() * pt_pbpb->GetStdDev();
