@@ -15,7 +15,7 @@ bool sign(int x, int y){ //sprawdza znak ladunku
 void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int, byle mial dobry znak)
 
 	double mean;
-	double variance;
+	double variance, uvariance;
 	double scaledvar;
 	ifstream my_input;
   const char *filename = "mickop2.txt";
@@ -68,18 +68,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   pt_pbpb->SetBarOffset(-2.0);
   pt_pbpb->Draw("BAR3");
 
-	/*
-	//zapis histogramu do pliku root
-	char rootfile[100];
-	const char *root = ".root";
-	strcpy(rootfile,histname);
-	strcat(rootfile, root);
-	TFile *flog = new TFile(rootfile, "recreate");// za pierwzeym razem trzeba,"recreate");
-	flog->cd();
-	pt_pbpb->Write();
-	flog->Close();
-	*/
-	//zapis histogramu do png
+	/*zapis histogramu do png
 	char histfile[100] = "";
 	const char *png = ".png";
 	const char *histfile1 = "_";
@@ -88,10 +77,12 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
 	strcat(histfile, histname4);
 	strcat(histfile, png);
 	//cout <<histfile<<endl;
-	canvas->Print(histfile);
+	canvas->Print(histfile);*/
 
+	//statystki zderzenia
   mean = pt_pbpb->GetMean();
   variance = pt_pbpb->GetStdDev() * pt_pbpb->GetStdDev();
+	uvariance = 2*variance * pt_pbpb->GetStdDevError();
   scaledvar = variance / mean;
 
 	//obliczone dane
@@ -104,6 +95,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
 	cout<<outputname<<endl;
   cout<<"srednie odchylenie: "<<mean<<endl;
   cout<<"wariancja: "<<variance<<endl;
+	cout<<"niepewność wariancji: "<<uvariance<<endl;
   cout<<"wariancja skalowana: "<<scaledvar<<endl;
 
 }
