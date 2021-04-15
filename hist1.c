@@ -69,7 +69,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   pt_pbpb->Draw("BAR3");
 
 	/*
-	//zapis histogramu do pliku
+	//zapis histogramu do pliku root
 	char rootfile[100];
 	const char *root = ".root";
 	strcpy(rootfile,histname);
@@ -87,7 +87,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
 	strcat(histfile, histfile1);
 	strcat(histfile, histname4);
 	strcat(histfile, png);
-	cout <<histfile<<endl;
+	//cout <<histfile<<endl;
 	canvas->Print(histfile);
 
   mean = pt_pbpb->GetMean();
