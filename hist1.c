@@ -33,7 +33,6 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   TH1I *pt_pbpb = new TH1I("Rozklad rodzaju czastek", histname, 100, -0.5, 11.5); //"czastka nr"+std::to_string(pId)
 
 
-  long npart1, npart_1, npart101, npart_102;
   int npart, ipass, counter, charge; //l czastek, pass, counter, ladunek
   double pass;
   int id;  //w pliku przechowywane sa pedy poprzeczne
@@ -46,7 +45,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
 		if (npart != 2){ //dla 2 zderzen blad danych
 	    my_input>>ipass;
 	    for(int i=1; i<=npart; i=i+1){
-	      my_input>>pass>>pass>>charge>>pass>>pass>>pass>>pass>>id;        //wczytujemy z pliku kolejne wartosci
+	      my_input>>charge>>id;        //wczytujemy z pliku kolejne wartosci
 	      if (id == pId && sign(charge, pCharge)){
 				//	cout <<charge<<endl;
 	        counter++;
