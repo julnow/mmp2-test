@@ -30,7 +30,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
 	strcat(histname, histname4);
   my_input.open(filename);   //otwieramy plik z danymi
 
-  TH1I *pt_pbpb = new TH1I("Rozklad rodzaju czastek", histname, 100, 0.5, 12); //"czastka nr"+std::to_string(pId)
+  TH1I *pt_pbpb = new TH1I("Rozklad rodzaju czastek", histname, 100, -0.5, 11.5); //"czastka nr"+std::to_string(pId)
 
 
   long npart1, npart_1, npart101, npart_102;
