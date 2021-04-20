@@ -1,7 +1,8 @@
 //zamienia odczytane pliki z macro do histogramu
 #include "TMath.h"
+int nmb = 9999983; //liczba zderzeń
+int sample_size = (int)nmb/20;
 
-// dlaczego co jakiś czas jest n_cząstek = 2 i nie ma tych cząstek w pliku tekstowym?
 bool sign(int x, int y){ //sprawdza znak ladunku
 	if (x>0 && y>0)
 		return true;
@@ -16,9 +17,9 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
 
 	double mean;
 	double variance, uvariance;
-	double scaledvar;
+	double scaledvar, uscaledvar;
 	ifstream my_input;
-  const char *filename = "mickop2.txt";
+  const char *filename = "julnow1.txt";
   const char *histname1 = "Histogram czastki o ID = ";
   const char *histname2 = to_string(pId).c_str();
 	const char *histname3 = ", q = ";
@@ -31,7 +32,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   my_input.open(filename);   //otwieramy plik z danymi
 
   TH1I *pt_pbpb = new TH1I("Rozklad rodzaju czastek", histname, 100, -0.5, 11.5); //"czastka nr"+std::to_string(pId)
-
+	TH1D *war_skal = new TH1D("Rozklad wariancji skal", "wariancja skal", 100, -0.5, 2.5); //histogram wariancji skalowanej
 
   int npart, ipass, counter, charge; //l czastek, pass, counter, ladunek
   double pass;
@@ -40,23 +41,32 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   //while(my_input>>val){
   //while(!my_input.eof()){
   while(my_input.peek() != EOF){
-    my_input>>npart>>ipass;
-		counter = 0;
-		if (npart != 2){ //dla 2 zderzen blad danych
-	    my_input>>ipass;
-	    for(int i=1; i<=npart; i=i+1){
-	      my_input>>charge>>id;        //wczytujemy z pliku kolejne wartosci
-	      if (id == pId && sign(charge, pCharge)){
-				//	cout <<charge<<endl;
-	        counter++;
+		TH1I *tmp = new TH1I("Rozklad do wariancji skal", "war skal", 100, 0.5, 11.5);
+			for (int i=0; i<sample_size;++i){
+		    my_input>>npart>>ipass;
+				counter = 0;
+				if (npart != 2){ //dla 2 zderzen blad danych
+			    my_input>>ipass;
+			    for(int i=1; i<=npart; i=i+1){
+			      my_input>>charge>>id;        //wczytujemy z pliku kolejne wartosci
+			      if (id == pId && sign(charge, pCharge)){
+						//	cout <<charge<<endl;
+			        counter++;
 
-	      }
-	    }
-		}
-		pt_pbpb->Fill(counter);
+		      }
+		    }
+			}
+			pt_pbpb->Fill(counter);
+			tmp->Fill(counter);
+		}//teraz liczymy dla tymczasowego histogramu (sampling) war skalowaną
+		double tmp_mean = tmp->GetMean();
+		double tmp_variance = tmp->GetStdDev() * tmp->GetStdDev();
+		double tmp_scaledvar = tmp_variance / tmp_mean;
+		war_skal->Fill(tmp_scaledvar);
+		//cout<<"war skalowana dla tego subsampla "<<tmp_scaledvar<<endl;
   }
   my_input.close();
-
+cout<<"sample size "<<sample_size<<endl;
   //po wczytaniu wszystkich danych histogram jest gotowy
   //mozna go narysowac:
 	auto canvas = new TCanvas("c","Panel");
@@ -66,6 +76,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   pt_pbpb->SetBarWidth(5.0);
   pt_pbpb->SetBarOffset(-2.0);
   pt_pbpb->Draw("BAR3");
+	//war_skal->Draw("BAR3");
 
 	/*zapis histogramu do png
 	char histfile[100] = "";
@@ -83,6 +94,8 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   variance = pt_pbpb->GetStdDev() * pt_pbpb->GetStdDev();
 	uvariance = 2*variance * pt_pbpb->GetStdDevError();
   scaledvar = variance / mean;
+	uscaledvar = 2*scaledvar*war_skal->GetStdDevError();
+
 
 	//obliczone dane
 	const char *outputname1 = "Dla czastki o ID = ";
@@ -96,5 +109,6 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   cout<<"wariancja: "<<variance<<endl;
 	cout<<"niepewność wariancji: "<<uvariance<<endl;
   cout<<"wariancja skalowana: "<<scaledvar<<endl;
+	cout<<"niepewność wariancji skalowanej :"<<uscaledvar<<endl;
 
 }
