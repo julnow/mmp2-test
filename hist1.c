@@ -8,7 +8,7 @@ bool sign(int x, int y){ //sprawdza znak ladunku
 		return true;
 	else if (x<0 && y<0)
 		return true;
-	else if (x!=0&& y==0) //dla 0 suma wszystkich ladunkow
+	else if (x!=0&& y==0) //dla 0 suma wszystkich ladunkow niezerowych
 		return true;
 	else
 		return false;
@@ -32,14 +32,11 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   my_input.open(filename);   //otwieramy plik z danymi
 
   TH1I *pt_pbpb = new TH1I("Rozklad rodzaju czastek", histname, 100, -0.5, 11.5); //"czastka nr"+std::to_string(pId)
-	//TH1D *war_skal = new TH1D("Rozklad wariancji skal", "wariancja skal", 100, 0, 2); //histogram wariancji skalowanej
 	TH1D *war_skal = new TH1D("Rozklad wariancji skal", "wariancja skal", 100, 0, 3); //histogram wariancji skalowanej
   int npart, ipass, counter, charge; //l czastek, pass, counter, ladunek
   double pass;
   int id;  //w pliku przechowywane sa pedy poprzeczne
-  //int val = 0;
-  //while(my_input>>val){
-  //while(!my_input.eof()){
+
   while(my_input.peek() != EOF){
 		TH1I *tmp = new TH1I("Rozklad do wariancji skal", "war skal", 100, -0.5, 11.5); //tymczasowy histogram do obliczenia wariancji skalowanej próbki
 			for (int i=0; i<sample_size;++i){
