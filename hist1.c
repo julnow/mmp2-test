@@ -94,7 +94,7 @@ void hist1(int pId, int pCharge){ //podajemy ID czastki i jej znak (dowolny int,
   variance = pt_pbpb->GetStdDev() * pt_pbpb->GetStdDev();
 	uvariance = 2*variance * pt_pbpb->GetStdDevError();
   scaledvar = variance / mean;
-	uscaledvar = war_skal->GetStdDevError();
+	uscaledvar = war_skal->GetStdDev();
 
 
 	//obliczone dane
