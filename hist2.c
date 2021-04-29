@@ -27,15 +27,15 @@ void hist2(int pCharge){ //podajemy ID czastki i jej znak (dowolny int, byle mia
 	strcat(histname, histname4);
   my_input.open(filename);   //otwieramy plik z danymi
 
-  TH1I *pt_pbpb = new TH1I("Rozklad rodzaju czastek", histname, 100, -0.5, 11.5); //"czastka nr"+std::to_string(pId)
-	TH1D *war_skal = new TH1D("Rozklad wariancji skal", "wariancja skal", 100, 0, 3); //histogram wariancji skalowanej
+  TH1I *pt_pbpb = new TH1I("Rozklad rodzaju czastek", histname, 100, -0.5, 32.5); //"czastka nr"+std::to_string(pId)
+	TH1D *war_skal = new TH1D("Rozklad wariancji skal", "wariancja skal", 100, 0, 4); //histogram wariancji skalowanej
 
 	int npart, ipass, counter, charge; //l czastek, pass, counter, ladunek
 	double pass;
 	int id;  //w pliku przechowywane sa pedy poprzeczne
 
 	while(my_input.peek() != EOF){
-		TH1I *tmp = new TH1I("Rozklad do wariancji skal", "war skal", 100, -0.5, 11.5); //tymczasowy histogram do obliczenia wariancji skalowanej próbki
+		TH1I *tmp = new TH1I("Rozklad do wariancji skal", "war skal", 100, -0.5, 32.5); //tymczasowy histogram do obliczenia wariancji skalowanej próbki
 			for (int i=0; i<sample_size;++i){
 				my_input>>npart>>ipass;
 				counter = 0;
@@ -55,7 +55,7 @@ void hist2(int pCharge){ //podajemy ID czastki i jej znak (dowolny int, byle mia
 		double tmp_variance = tmp->GetStdDev() * tmp->GetStdDev();
 		double tmp_scaledvar = tmp_variance / tmp_mean;
 		war_skal->Fill(tmp_scaledvar);
-		//cout<<"war skalowana dla tego subsampla "<<tmp_scaledvar<<endl;
+		cout<<"war skalowana dla tego subsampla "<<tmp_scaledvar<<endl;
 	}
 	my_input.close();
 
@@ -95,6 +95,7 @@ void hist2(int pCharge){ //podajemy ID czastki i jej znak (dowolny int, byle mia
 	cout<<outputname<<endl;
   cout<<"srednie odchylenie: "<<mean<<endl;
   cout<<"wariancja: "<<variance<<endl;
+	cout<<"niepewnosc wariancji "<<uvariance<<endl;
   cout<<"wariancja skalowana: "<<scaledvar<<endl;
 	cout<<"niepewność wariancji skalowanej :"<<uscaledvar<<endl;
 
